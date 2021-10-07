@@ -9,7 +9,7 @@ public:
 	TransitionFunction();
 	~TransitionFunction();
 	//operator== gonna need this probably
-	int transition(EndState &endStates);
+	int transition(EndState& endStates) {}
 
 private:
 	string startState;
@@ -21,6 +21,7 @@ private:
 
 TransitionFunction::TransitionFunction()
 {
+	//set the three identifiers and begin a list of end states
 	startState = "";
 }
 
