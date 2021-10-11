@@ -24,6 +24,11 @@ using namespace std;
 //Additional Created files
 #include "endState.h"
 #include "TransitionFunction.h"
+#include "PDADefHandler.h"
+#include "PDA.h"
+#include "Node.h"
+#include "Config.h"
+
 
 //Global variables for flagging
 bool PDA_OPEN;

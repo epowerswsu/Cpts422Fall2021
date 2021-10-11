@@ -1,26 +1,45 @@
 #pragma once
+
+#include <list>
+
 #include "TransitionFunction.h"
 #include "Node.h"
 
+/*
+*	PDA 
+*/
 class PDA {
 public:
-	TransitionFunction* transitionFunctions;
-	char* alphabet;
-	int transitionFunctionsSize, alphabetSize;
-	Node* head;
-
 	PDA(std::string definitionFilePath);
 	~PDA();
-	void start(std::string word);
-	void step();
+
+	char* stackAlphabet;
+	char* inputAlphabet;
+	string* stateAlphabet;
+
+	int stackAlphabetSize, transitionAlphabetSize, stateAlphabetSize;
+	Node* head;
+	
+
+private:
+	string initialState;
+	char initialStack;
+
+	char* stackAlphabet;
+	char* inputAlphabet;
+	string* stateAlphabet;
+	list<TransitionFunction> transitionFunctions;
+
+	list<string> endstates;
 };
 
 PDA::PDA(std::string definitionFilePath) {
 	//open and parse the def file
 
 	//count number of transition functions and alphabet size
-	transitionFunctionsSize = 10;
-	alphabetSize = 10;
+	stackAlphabetSize = 10;
+	transitionAlphabetSize = 10;
+	stateAlphabetSize = 10;
 	head = NULL;
 
 	transitionFunctions = new TransitionFunction[transitionFunctionsSize];
