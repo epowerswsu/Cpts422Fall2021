@@ -1,4 +1,5 @@
-This PDA accepts the language of odd palindromes over {a, b} is shown below. Any transitition not specified in this pushdown automaton is empty.
+This PDA accepts the language of odd palindromes over {a, b} is shown below. 
+Any transitition not specified in this pushdown automaton is empty.
 
 STATES: s0 s1 s2
 
