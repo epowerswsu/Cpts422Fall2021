@@ -9,14 +9,22 @@ public:
 	TransitionFunction();
 	~TransitionFunction();
 	//operator== gonna need this probably
+	
 	int transition(EndState& endStates) {}
+	
+	bool newEndState(EndState e);
+	void addEndState(EndState e) { endStates.push_back(e); }
+
+	string getStartState() { return startState; }
+	char getStackTop() { return stackTop; }
+	char getInput() { return input; }
 
 private:
 	string startState;
-	string input;
-	string stackTop;	//could be a char
+	char stackTop;
+	char input;
+	
 	list<EndState> endStates;
-
 };
 
 TransitionFunction::TransitionFunction()
@@ -27,4 +35,16 @@ TransitionFunction::TransitionFunction()
 
 TransitionFunction::~TransitionFunction()
 {
+}
+
+bool TransitionFunction::newEndState(EndState e)
+{
+	for (list<EndState>::iterator it = endStates.begin(); it != endStates.begin(); it++)
+	{
+		if (*it == e)
+			;//duplicate, ignore
+		else
+			endStates.push_back(e);
+	}
+	return false;
 }

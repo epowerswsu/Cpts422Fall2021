@@ -5,5 +5,10 @@
 class PDADefHandler
 {
 	PDADefHandler() {}
-	PDADefHandler(string PDADefPath)
+	PDADefHandler(string PDADefPath);
 };
+
+PDADefHandler::PDADefHandler(string filename)
+{
+
+}
