@@ -141,6 +141,10 @@
   <ItemGroup>
     <ClInclude Include="..\Cpts422Fall2021\endstate.h" />
     <ClInclude Include="..\Cpts422Fall2021\TransitionFunction.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="PDA.h" />
+    <ClInclude Include="PDADefHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Cpts422Fall2021\main.cpp" />

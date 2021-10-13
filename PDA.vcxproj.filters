@@ -21,6 +21,18 @@
     <ClInclude Include="..\Cpts422Fall2021\TransitionFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PDA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PDADefHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Cpts422Fall2021\main.cpp">
