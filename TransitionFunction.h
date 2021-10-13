@@ -7,6 +7,7 @@ class TransitionFunction
 {
 public:
 	TransitionFunction();
+	TransitionFunction(string ss, char st, char in, EndState e) { startState = ss; stackTop = st; input = in; endStates.push_back(e); }
 	~TransitionFunction();
 	//operator== gonna need this probably
 	

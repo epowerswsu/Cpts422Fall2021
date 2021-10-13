@@ -11,12 +11,13 @@
 */
 class PDA {
 public:
-	PDA(std::string definitionFilePath);
+	PDA() {}
+	PDA(string definitionFilePath);
 	~PDA();
 
-	int stackAlphabetSize, transitionAlphabetSize, stateAlphabetSize;
+	int stackAlphabetSize, inputAlphabetSize, stateAlphabetSize;
 	Node* head;
-	bool addToList(string state, char input, char stack,EndState e);
+	bool addToTFList(string state, char input, char stack, EndState e);
 	void splitLineForTF(string line, string& iState, char& iInput, char& iStack, string& endstate, string& oStack);
 
 	void displayTF();
@@ -52,13 +53,19 @@ void PDA::displayTF()
 
 //runs through the list of PDA state change functions to see if that state 
 //already exists, if it exists, return true (yes it was found in list)
-bool PDA::addToList(string state, char input, char stack,EndState e)
+bool PDA::addToTFList(string state, char input, char stack, EndState e)
 {
 	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it!=transitionFunctions.end(); it++)
 	{ 
 		if (it->getStartState() == state && it->getInput() == stack && it->getStackTop() == stack)
 		{
+			//check for copy in the list of matching transition functions
 			return true;
+		}
+		else
+		{
+			TransitionFunction tf(state, input, stack, e);
+			transitionFunctions.push_back(tf);
 		}
 	}
 	return false;
@@ -67,49 +74,99 @@ bool PDA::addToList(string state, char input, char stack,EndState e)
 //splits the line for transition functions
 void PDA::splitLineForTF(string line, string &iState, char &iInput, char &iStack, string &endState, string &oStack)
 {
-	const char splitToken = ' ';
-	const char* delim = &splitToken;
 	string lineSplit[5];
-	char* token = strtok(const_cast<char*>(line.c_str()), &splitToken);
+	string currentData;
+	int count = 0;
 	int i = 0;
-	while (i < 5)
+	while (line[i])
 	{
-		lineSplit[i] = string(token);
-		token = strtok(nullptr, delim);	//this needs to check for errors**
+		if (line[i] != ' ')
+		{
+			currentData += line[i];
+		}
+		else
+		{
+			lineSplit[count] = currentData;
+			count++;
+			currentData = "";
+		}
 		i++;
 	}
+	lineSplit[count] = currentData;
 	iState = lineSplit[0]; iInput = lineSplit[1][0]; iStack = lineSplit[2][0];
 	endState = lineSplit[3]; oStack = lineSplit[4];
 }
 
-PDA::PDA(std::string definitionFilePath) {
+PDA::PDA(string definitionFilePath) {
 	string fileEX = "pda.def";
 	//open and parse the def file
-	std::ifstream fin;
+	ifstream fin;
 	fin.open(fileEX);
-	//count number of transition functions and alphabet size
-	stackAlphabetSize = 10;
-
-	transitionAlphabetSize = 10;
-
-	stateAlphabetSize = 10;
-
-	head = NULL;
+	char line[256];
 	
-	//alphabet = new char[alphabetSize];
+	//get the state alphabet
+	while (fin.getline(line, 256))
+	{
+		string sline = line;
+		if (sline.find("STATES:"))
+		{
+			// splitLineForString();
+			stateAlphabetSize = 5;
+			break;
+		}
+	}
+
+	//get the input alphabet
+	while (fin.getline(line, 256))
+	{
+		string sline = line;
+		if (sline.find("INPUT_ALPHABET:"))
+		{
+			//splitLineForChar();
+			inputAlphabetSize = 5;
+			break;
+		}
+	}
+
+	//get the stack function
+	while (fin.getline(line, 256))
+	{
+		string sline = line;
+		if (sline.find("STACK_ALPHABET:"))
+		{
+			//splitLineForChar();
+			stackAlphabetSize = 5;
+			break;
+		}
+	}
+	
+	//get to transition function
+	while (fin.getline(line, 256))
+	{
+		string sline = line;
+		if (sline.find("TRANSITION_FUNCTION:"))
+		{
+			break;
+		}
+	}
+
 
 	//fill arrays
 	string transition_line;
 	string iState, eState, oStack;
 	char iInput, iStack;
-	while (/* getting lines from pda.def */0)
+	while (fin.getline(line, 256))
 	{
+		if (line[0] != 's')
+			break;
 		string ex_pda_line = "s0 a X s1 XY";
 		splitLineForTF(ex_pda_line, iState, iInput, iStack, eState, oStack);
 		EndState e(eState, oStack);
-		addToList(iState, iInput, iStack, e);
+		addToTFList(iState, iInput, iStack, e);
 	}
 	//
+
+
 }
 
 PDA::~PDA() {}

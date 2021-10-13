@@ -43,5 +43,8 @@
     <None Include="..\Cpts422Fall2021\README.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="pda.def">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

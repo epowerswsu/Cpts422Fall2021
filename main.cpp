@@ -5,7 +5,7 @@
  *
  *	Authors: Jacob Halter
  *			 Ethan Powers
- *			 Nathan cross
+ *			 Nathan Cross
  ******************************************************************************
  * Description:
  *	The PDA function does ... etc.
@@ -34,6 +34,7 @@ using namespace std;
 bool PDA_OPEN;
 bool PDA_RUNNING;
 list<string> inputStr;
+PDA pushDownAutomata;
 
 //configurations
 int TRANSITIONS;
@@ -68,20 +69,19 @@ bool readyToExit()
 void displayInstructions()
 {
 	cout << "list of instructions\n"
-		<< "   \'c\' or \'C\' | \n"
-		<< "   \'d\' or \'D\' | \n"
+		<< "   \'c\' or \'C\' | Close Pushdown Automaton\n"
+		<< "   \'d\' or \'D\' | Delete Input Strings\n"
 		<< "   \'e\' or \'E\' | exits the application\n"
-		<< "   \'h\' or \'H\' | \n"
-		<< "   \'i\' or \'I\' | \n"
-		<< "   \'l\' or \'L\' | \n"
-		<< "   \'o\' or \'O\' | \n"
-		<< "   \'p\' or \'P\' | \n"
-		<< "   \'q\' or \'Q\' | \n"
-		<< "   \'r\' or \'R\' | \n"
-		<< "   \'s\' or \'S\' | \n"
-		<< "   \'t\' or \'T\' | \n"
-		<< "   \'v\' or \'V\' | \n\n";
-
+		<< "   \'h\' or \'H\' | help user\n"
+		<< "   \'i\' or \'I\' | Insert Input String\n"
+		<< "   \'l\' or \'L\' | List Input Strings\n"
+		<< "   \'o\' or \'O\' | Open Pushdown Automaton\n"
+		<< "   \'p\' or \'P\' | Display Paths\n"
+		<< "   \'q\' or \'Q\' | Quit Pushdown Automaton\n"
+		<< "   \'r\' or \'R\' | Run Pushdown Automaton\n"
+		<< "   \'s\' or \'S\' | Set number of Transitions\n"
+		<< "   \'t\' or \'T\' | Truncate Instantaneous Descriptions\n"
+		<< "   \'v\' or \'V\' | View Pushdown Automaton\n\n";
 }
 
 //‘I’ or ‘i’ Insert Input String
@@ -109,11 +109,12 @@ void openPDA()
 {
 	if (PDA_OPEN)
 		cout << "please close the current PDA before opening a new one!\n\n";
-	//this is the big complex issue!!!
-		//getPDADefinition Filename
-
-		//CREATE or EDIT the PDA
-
+	else
+	{
+		pushDownAutomata = PDA("pda.def");
+		pushDownAutomata.displayTF();
+	}
+	
 }
 
 //‘P’ or ‘p’ Display Paths
