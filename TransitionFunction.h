@@ -19,6 +19,8 @@ public:
 	char getStackTop() { return stackTop; }
 	char getInput() { return input; }
 
+	list<EndState> getEndStates() { return endStates; }
+
 private:
 	string startState;
 	char stackTop;
