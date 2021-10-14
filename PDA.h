@@ -11,7 +11,7 @@
 */
 class PDA {
 public:
-	PDA() {}
+	PDA();
 	PDA(string definitionFilePath);
 	~PDA();
 
@@ -26,9 +26,9 @@ private:
 	string initialState;
 	char initialStack;
 
-	char* stackAlphabet;
-	char* inputAlphabet;
-	string* stateAlphabet;
+	list<string> stateAlphabet;
+	list<char> stackAlphabet;
+	list<char> inputAlphabet;
 	list<TransitionFunction> transitionFunctions;
 
 	list<string> endstates;
@@ -97,27 +97,52 @@ void PDA::splitLineForTF(string line, string &iState, char &iInput, char &iStack
 	endState = lineSplit[3]; oStack = lineSplit[4];
 }
 
-PDA::PDA(string definitionFilePath) {
-	string fileEX = "pda.def";
+PDA::PDA()
+{
+
+}
+
+PDA::PDA(string definitionFilePath) 
+{
 	//open and parse the def file
 	ifstream fin;
-	fin.open(fileEX);
-	char line[256];
+	fin.open(definitionFilePath, ios::in);
 	
-	//get the state alphabet
-	while (fin.getline(line, 256))
+	string line;
+	string addToList = "";
+	
+	//get the state alphabet **this one works**
+	while (getline(fin, line))
 	{
-		string sline = line;
-		if (sline.find("STATES:"))
+		bool x = line.find("STATES:");
+		if (!x)
 		{
-			// splitLineForString();
-			stateAlphabetSize = 5;
+			int i = 0;
+			while (line[i] != ' ') { i++; }
+			i++;
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if(!addToList.empty())
+						stateAlphabet.push_back(addToList);
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			if (!addToList.empty())
+				stateAlphabet.push_back(addToList);
+			addToList = "";
+			stateAlphabetSize = stateAlphabet.size();
 			break;
 		}
+		//cout << line;
+		//getline(fin, line);
 	}
 
 	//get the input alphabet
-	while (fin.getline(line, 256))
+	while (getline(fin, line))
 	{
 		string sline = line;
 		if (sline.find("INPUT_ALPHABET:"))
@@ -129,7 +154,7 @@ PDA::PDA(string definitionFilePath) {
 	}
 
 	//get the stack function
-	while (fin.getline(line, 256))
+	while (getline(fin, line))
 	{
 		string sline = line;
 		if (sline.find("STACK_ALPHABET:"))
@@ -141,10 +166,9 @@ PDA::PDA(string definitionFilePath) {
 	}
 	
 	//get to transition function
-	while (fin.getline(line, 256))
+	while (getline(fin, line))
 	{
-		string sline = line;
-		if (sline.find("TRANSITION_FUNCTION:"))
+		if (!line.find("TRANSITION_FUNCTION:"))
 		{
 			break;
 		}
@@ -155,7 +179,7 @@ PDA::PDA(string definitionFilePath) {
 	string transition_line;
 	string iState, eState, oStack;
 	char iInput, iStack;
-	while (fin.getline(line, 256))
+	while (getline(fin, line))
 	{
 		if (line[0] != 's')
 			break;
@@ -164,9 +188,10 @@ PDA::PDA(string definitionFilePath) {
 		EndState e(eState, oStack);
 		addToTFList(iState, iInput, iStack, e);
 	}
-	//
+	
+	//get the endstate and other stuff too.
 
-
+	fin.close();
 }
 
 PDA::~PDA() {}

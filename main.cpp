@@ -34,7 +34,7 @@ using namespace std;
 bool PDA_OPEN;
 bool PDA_RUNNING;
 list<string> inputStr;
-PDA pushDownAutomata;
+PDA *pushDownAutomata = nullptr;
 
 //configurations
 int TRANSITIONS;
@@ -111,8 +111,11 @@ void openPDA()
 		cout << "please close the current PDA before opening a new one!\n\n";
 	else
 	{
-		pushDownAutomata = PDA("pda.def");
-		pushDownAutomata.displayTF();
+		PDA_OPEN = true;
+		pushDownAutomata = new PDA("pda.def");
+		pushDownAutomata->displayTF();
+		//pushDownAutomata = PDA("pda.def");
+		//pushDownAutomata.displayTF();
 	}
 	
 }
