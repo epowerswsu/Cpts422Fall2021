@@ -21,7 +21,8 @@ public:
 	char getInput() { return input; }
 
 	list<EndState> getEndStates() { return endStates; }
-
+	
+	void displayEndStates();
 private:
 	string startState;
 	char stackTop;
@@ -38,6 +39,17 @@ TransitionFunction::TransitionFunction()
 
 TransitionFunction::~TransitionFunction()
 {
+}
+
+void TransitionFunction::displayEndStates() 
+{
+	list<EndState>::iterator it = endStates.begin();
+	cout << "\t" << it->getState() << "\t" << it->getStack() << endl;
+	it++;
+	for (; it != endStates.end(); it++)
+	{
+		cout << "\t\t\t\t" << it->getState() << "\t" << it->getStack() << endl;
+	}
 }
 
 bool TransitionFunction::newEndState(EndState e)

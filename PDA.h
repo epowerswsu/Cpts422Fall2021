@@ -34,21 +34,15 @@ private:
 	list<string> endstates;
 };
 
-//I havent tested this, but it **should** work...
+//
 void PDA::displayTF()
 {
-	for (list<TransitionFunction>::iterator TFit = transitionFunctions.begin(); TFit != transitionFunctions.end(); TFit++)
+	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it != transitionFunctions.end(); it++)
 	{
-		cout << TFit->getStartState() << "\t" << TFit->getInput() << "\t" << TFit->getStackTop() << "\t";
-		list<EndState>::iterator ESit = TFit->getEndStates().begin();
-		cout << ESit->getState() << "\t" << ESit->getStack() << "\t\n";
-		TFit++;
-		for(; ESit != TFit->getEndStates().end(); ESit++)
-		{
-			cout << TFit->getStartState() << "\t" << TFit->getInput() << "\t" << TFit->getStackTop() << "\t";
-			cout << ESit->getState() << "\t" << ESit->getStack() << "\t\n";
-		}
+		cout << it->getStartState() << "\t" << it->getInput() << "\t" << it->getStackTop() << "\t";
+		it->displayEndStates();
 	}
+	cout << endl;
 }
 
 //runs through the list of PDA state change functions to see if that state 
