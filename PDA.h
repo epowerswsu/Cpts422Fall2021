@@ -15,12 +15,20 @@ public:
 	PDA(string definitionFilePath);
 	~PDA();
 
-	int stackAlphabetSize, inputAlphabetSize, stateAlphabetSize;
+	//int stackAlphabetSize, inputAlphabetSize, stateAlphabetSize;
+	
 	Node* head;
 	bool addToTFList(string state, char input, char stack, EndState e);
 	void splitLineForTF(string line, string& iState, char& iInput, char& iStack, string& endstate, string& oStack);
 
 	void displayTF();
+	
+	//Getters
+	string getInitialState() { return initialState; }
+	char getInitialStack() { return initialStack; }
+	int getStateAlphabetSize() { return stateAlphabet.size(); }
+	int getStackAlphabetSize() { return stackAlphabet.size(); }
+	int getinputAlphabetSize() { return inputAlphabet.size(); }
 
 private:
 	string initialState;
@@ -31,7 +39,7 @@ private:
 	list<char> inputAlphabet;
 	list<TransitionFunction> transitionFunctions;
 
-	list<string> endstates;
+	list<string> endStates;
 };
 
 //
@@ -121,16 +129,16 @@ PDA::PDA(string definitionFilePath)
 	
 	string line;
 	string addToList = "";
-	
+	int i = 0;
+
 	//get the state alphabet **this one works**
 	while (getline(fin, line))
 	{
-		bool x = line.find("STATES:");
-		if (!x)
+		if (!line.find("STATES:"))
 		{
-			int i = 0;
+			i = 0;
+			addToList = "";
 			while (line[i] != ' ') { i++; }
-			i++;
 			for (i; i <= line.size(); i++)
 			{
 				if (line[i] == ' ')
@@ -145,33 +153,58 @@ PDA::PDA(string definitionFilePath)
 			if (!addToList.empty())
 				stateAlphabet.push_back(addToList);
 			addToList = "";
-			stateAlphabetSize = stateAlphabet.size();
 			break;
 		}
-		//cout << line;
-		//getline(fin, line);
 	}
 
 	//get the input alphabet
 	while (getline(fin, line))
 	{
-		string sline = line;
-		if (sline.find("INPUT_ALPHABET:"))
+		if (!line.find("INPUT_ALPHABET:"))
 		{
-			//splitLineForChar();
-			inputAlphabetSize = 5;
+			i = 0;
+			addToList = "";
+			while (line[i] != ' ') { i++; }
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if (!addToList.empty())
+						inputAlphabet.push_back(addToList[0]);
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			if (!addToList.empty())
+				inputAlphabet.push_back(addToList[0]);
+			addToList = "";
 			break;
 		}
 	}
 
-	//get the stack function
+	//get the stack alphabet
 	while (getline(fin, line))
 	{
-		string sline = line;
-		if (sline.find("STACK_ALPHABET:"))
+		if (!line.find("STACK_ALPHABET:"))
 		{
-			//splitLineForChar();
-			stackAlphabetSize = 5;
+			i = 0;
+			addToList = "";
+			while (line[i] != ' ') { i++; }
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if (!addToList.empty())
+						stackAlphabet.push_back(addToList[0]);
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			if (!addToList.empty())
+				stackAlphabet.push_back(addToList[0]);
+			addToList = "";
 			break;
 		}
 	}
@@ -180,11 +213,8 @@ PDA::PDA(string definitionFilePath)
 	while (getline(fin, line))
 	{
 		if (!line.find("TRANSITION_FUNCTION:"))
-		{
 			break;
-		}
 	}
-
 
 	//fill arrays
 	string transition_line;
@@ -202,8 +232,83 @@ PDA::PDA(string definitionFilePath)
 		addToTFList(iState, iInput, iStack, e);
 	}
 	
-	//get the endstate and other stuff too.
+	//Initial State
+	while (getline(fin, line))
+	{
+		if (!line.find("INITIAL_STATE:"))
+		{
+			i = 0;
+			addToList = "";
+			while (line[i] != ' ') { i++; }
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if (!addToList.empty())
+						initialState = addToList;
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			addToList = "";
+			break;
+		}
+	}
 
+	//Start character
+	while (getline(fin, line))
+	{
+		if (!line.find("START_CHARACTER:"))
+		{
+			i = 0;
+			addToList = "";
+			while (line[i] != ' ') { i++; }
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if (!addToList.empty())
+						initialStack = addToList[0];
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			if (!addToList.empty())
+				initialStack = addToList[0];
+			addToList = "";
+			break;
+		}
+	}
+
+	//Final States
+	while (getline(fin, line))
+	{
+		if (!line.find("FINAL_STATES:"))
+		{
+			i = 0;
+			addToList = "";
+			while (line[i] != ' ') { i++; }
+			for (i; i <= line.size(); i++)
+			{
+				if (line[i] == ' ')
+				{
+					if (!addToList.empty())
+						endStates.push_back(addToList);
+					addToList = "";
+				}
+				else
+					addToList += line[i];
+			}
+			if (!addToList.empty())
+				endStates.push_back(addToList);
+			addToList = "";
+			break;
+		}
+	}
+
+	//end file
 	fin.close();
 }
 
