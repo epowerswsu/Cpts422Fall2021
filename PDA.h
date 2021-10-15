@@ -55,26 +55,40 @@ void PDA::displayTF()
 //already exists, if it exists, return true (yes it was found in list)
 bool PDA::addToTFList(string state, char input, char stack, EndState e)
 {
+	bool add = false;
+	if (transitionFunctions.empty()) 
+	{
+		TransitionFunction tf(state, input, stack, e);
+		transitionFunctions.push_back(tf);
+		return true;
+	}
+
+	//go through the list and search for the same start state
 	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it!=transitionFunctions.end(); it++)
 	{ 
-		if (it->getStartState() == state && it->getInput() == stack && it->getStackTop() == stack)
+		if (it->getStartState() == state && it->getInput() == input && it->getStackTop() == stack)
 		{
-			//check for copy in the list of matching transition functions
-			return true;
+			add = it->newEndState(e);
+			if (add)
+				it->addEndState(e);
+			return add;
 		}
-		else
+	/*	else
 		{
 			TransitionFunction tf(state, input, stack, e);
 			transitionFunctions.push_back(tf);
-		}
+			return true;
+		}*/
 	}
-	return false;
+	TransitionFunction tf(state, input, stack, e);
+	transitionFunctions.push_back(tf);
+	return true;
 }
 
 //splits the line for transition functions
 void PDA::splitLineForTF(string line, string &iState, char &iInput, char &iStack, string &endState, string &oStack)
 {
-	string lineSplit[5];
+	string lineSplit[6];
 	string currentData;
 	int count = 0;
 	int i = 0;
@@ -86,9 +100,12 @@ void PDA::splitLineForTF(string line, string &iState, char &iInput, char &iStack
 		}
 		else
 		{
-			lineSplit[count] = currentData;
-			count++;
-			currentData = "";
+			if (currentData != "")
+			{
+				lineSplit[count] = currentData;
+				count++;
+				currentData = "";
+			}
 		}
 		i++;
 	}
@@ -181,10 +198,12 @@ PDA::PDA(string definitionFilePath)
 	char iInput, iStack;
 	while (getline(fin, line))
 	{
-		if (line[0] != 's')
+		if (line == "")
 			break;
-		string ex_pda_line = "s0 a X s1 XY";
-		splitLineForTF(ex_pda_line, iState, iInput, iStack, eState, oStack);
+		//string ex_pda_line = "s0 a X  s1 XY";
+		//splitLineForTF(ex_pda_line, iState, iInput, iStack, eState, oStack);
+		
+		splitLineForTF(line, iState, iInput, iStack, eState, oStack);
 		EndState e(eState, oStack);
 		addToTFList(iState, iInput, iStack, e);
 	}

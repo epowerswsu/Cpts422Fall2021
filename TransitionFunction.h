@@ -7,7 +7,7 @@ class TransitionFunction
 {
 public:
 	TransitionFunction();
-	TransitionFunction(string ss, char st, char in, EndState e) { startState = ss; stackTop = st; input = in; endStates.push_back(e); }
+	TransitionFunction(string ss, char in, char st, EndState e) { startState = ss; stackTop = st; input = in; endStates.push_back(e); }
 	~TransitionFunction();
 	//operator== gonna need this probably
 	
@@ -42,12 +42,10 @@ TransitionFunction::~TransitionFunction()
 
 bool TransitionFunction::newEndState(EndState e)
 {
-	for (list<EndState>::iterator it = endStates.begin(); it != endStates.begin(); it++)
+	for (list<EndState>::iterator it = endStates.begin(); it != endStates.end(); it++)
 	{
 		if (*it == e)
-			;//duplicate, ignore
-		else
-			endStates.push_back(e);
+			return false;//duplicate, ignore
 	}
-	return false;
+	return true;
 }
