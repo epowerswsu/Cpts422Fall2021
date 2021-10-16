@@ -1,0 +1,3 @@
+maxTransitions=999
+transitionsPerStep=4
+truncated=42

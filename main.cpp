@@ -184,6 +184,7 @@ char getInput()
 
 void mainProgramLoop()
 {
+	Config config("ConfigFile.txt"); //config file test
 	char input = 'a';
 	bool exitApp = false;
 	displayInstructions();

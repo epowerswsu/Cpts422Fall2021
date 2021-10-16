@@ -98,12 +98,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="endstate.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
     <ClInclude Include="endstate.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="PDA.h" />
     <ClInclude Include="TransitionFunction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ConfigFile.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
