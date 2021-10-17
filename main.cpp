@@ -40,12 +40,30 @@ PDA *pushDownAutomata = nullptr;
 int TRANSITIONS;
 bool TRUNCATE_DISP;
 
+string getString(string query)
+{
+	string answer;
+	while (true)
+	{
+		cout << query;
+		cin >> answer;
+		if (cin.fail())
+		{
+			cout << "Please enter valid input\n";
+			cin.clear();
+		}
+		/**/
+	}
+	return answer;
+}
+
 //'C' or 'c' Close Pushdown Automaton
 void closePDA()
 {
 	if (PDA_OPEN)
 	{
 		//close pda
+		PDA_OPEN = false;
 	}
 	else
 		cout << "there is no pda open\n\n";
@@ -111,14 +129,36 @@ void openPDA()
 		cout << "please close the current PDA before opening a new one!\n\n";
 	else
 	{
-		PDA_OPEN = true;
-		pushDownAutomata = new PDA("pda.def");
+		string PDADefFile;
+		while (true) //make sure file is a .def file and then make sure we can open it.
+		{
+			PDADefFile = getString("Enter file path to your PDA definition file: ");
+			if (PDADefFile.find(".def"))
+			{
+				cout << "Please enter a \'.def\' file\n";
+			}
+			else
+			{
+				ifstream fin;
+				fin.open(PDADefFile);
+				if (fin.fail())
+				{
+					cout << "Error opening file, please try again\n";
+				}
+				else 
+				{
+					fin.close();
+					break;
+				}
+			}
+		}
+		pushDownAutomata = new PDA(PDADefFile);
 		pushDownAutomata->displayTF();
-		//pushDownAutomata = PDA("pda.def");
-		//pushDownAutomata.displayTF();
+		PDA_OPEN = true;
 	}
-	
 }
+	
+
 
 //‘P’ or ‘p’ Display Paths
 void displayPaths()

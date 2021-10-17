@@ -11,13 +11,13 @@
 */
 class PDA {
 public:
-	PDA();
 	PDA(string definitionFilePath);
 	~PDA();
 
 	//int stackAlphabetSize, inputAlphabetSize, stateAlphabetSize;
 	
 	Node* head;
+	bool isNewStartState(string state, char input, char stack, list<TransitionFunction>::iterator& found);
 	bool addToTFList(string state, char input, char stack, EndState e);
 	void splitLineForTF(string line, string& iState, char& iInput, char& iStack, string& endstate, string& oStack);
 
@@ -53,38 +53,41 @@ void PDA::displayTF()
 	cout << endl;
 }
 
-//runs through the list of PDA state change functions to see if that state 
-//already exists, if it exists, return true (yes it was found in list)
+bool PDA::isNewStartState(string state, char input, char stack, list<TransitionFunction>::iterator &found)
+{
+	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it != transitionFunctions.end(); it++)
+	{
+		if (it->getStartState() == state && it->getInput() == input && it->getStackTop() == stack)
+		{
+			found = it;
+			return false;
+		}
+	}
+	return true;
+}
+
+//If a new state is added to the PDA, return true. If the state passed in is a duplicate return false
 bool PDA::addToTFList(string state, char input, char stack, EndState e)
 {
-	bool add = false;
-	if (transitionFunctions.empty()) 
+	list<TransitionFunction>::iterator it = transitionFunctions.begin();
+	if (isNewStartState(state, input, stack, it))
 	{
 		TransitionFunction tf(state, input, stack, e);
 		transitionFunctions.push_back(tf);
 		return true;
 	}
-
-	//go through the list and search for the same start state
-	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it!=transitionFunctions.end(); it++)
-	{ 
-		if (it->getStartState() == state && it->getInput() == input && it->getStackTop() == stack)
+	else
+	{
+		if (it->newEndState(e))
 		{
-			add = it->newEndState(e);
-			if (add)
-				it->addEndState(e);
-			return add;
-		}
-	/*	else
-		{
-			TransitionFunction tf(state, input, stack, e);
-			transitionFunctions.push_back(tf);
+			it->addEndState(e);
 			return true;
-		}*/
+		}
+		else
+			return false;
 	}
-	TransitionFunction tf(state, input, stack, e);
-	transitionFunctions.push_back(tf);
-	return true;
+
+	return false;
 }
 
 //splits the line for transition functions
@@ -116,17 +119,16 @@ void PDA::splitLineForTF(string line, string &iState, char &iInput, char &iStack
 	endState = lineSplit[3]; oStack = lineSplit[4];
 }
 
-PDA::PDA()
-{
-
-}
-
 PDA::PDA(string definitionFilePath) 
 {
 	//open and parse the def file
 	ifstream fin;
 	fin.open(definitionFilePath, ios::in);
-	
+	if (fin.fail())
+	{
+		cout << "Error opening file " << definitionFilePath << "\n\n";
+		return;
+	}
 	string line;
 	string addToList = "";
 	int i = 0;
