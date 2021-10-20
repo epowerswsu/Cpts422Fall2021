@@ -52,7 +52,6 @@ string getString(string query)
 			cout << "Please enter valid input\n";
 			cin.clear();
 		}
-		/**/
 	}
 	return answer;
 }

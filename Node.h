@@ -2,28 +2,39 @@
 #include <list>
 #include <string>
 
-class Node {
+template <class T> class Node {
 public:
-	Node* parent;
-	std::string state;
-	std::string remainingChars;
-	std::string stack;
-	std::list<Node*> children;
-
-	Node(Node* parent, std::string state, std::string remainingChars, std::string stack);
+	Node(Node* parent, T info);
+	Node(T info);
 	~Node();
-	void addChild(Node* child); //PDA class can determine the children of a node using the list of transitions
+
+	void addChild(Node* child) { this->children.push_back(child); }
+	int getChildrenSize() { return children->size(); }
+
+
+private:
+	T data;
+	
+	Node* parent;
+	std::list<Node*> children;
 };
 
-Node::Node(Node* parent, std::string state, std::string remainingChars, std::string stack) {
+template<class T>
+Node<T>::Node(Node* parent, T info)
+{
 	this->parent = parent;
-	this->state = state;
-	this->remainingChars = remainingChars;
-	this->stack = stack;
+	data = info
 }
 
-Node::~Node() {}
+template<class T>
+Node<T>::Node(T info)
+{
+	this->parent = parent;
+	data = info;
+}
 
-void Node::addChild(Node* child) {
-	this->children.push_back(child);
+template <class T> 
+Node<T>::~Node() 
+{
+
 }

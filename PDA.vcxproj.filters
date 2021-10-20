@@ -33,6 +33,9 @@
     <ClInclude Include="PDADefHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Cpts422Fall2021\main.cpp">

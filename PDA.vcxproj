@@ -145,6 +145,7 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="PDA.h" />
     <ClInclude Include="PDADefHandler.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Cpts422Fall2021\main.cpp" />
