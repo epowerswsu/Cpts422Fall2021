@@ -30,7 +30,10 @@
     <ClInclude Include="PDA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tree.h">
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

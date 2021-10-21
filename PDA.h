@@ -5,6 +5,8 @@
 
 #include "TransitionFunction.h"
 #include "Node.h"
+#include "Tree.h"
+#include "Transition.h"
 
 /*
 *	PDA 
@@ -28,6 +30,10 @@ public:
 	int getStackAlphabetSize() { return stackAlphabet.size(); }
 	int getinputAlphabetSize() { return inputAlphabet.size(); }
 
+	//tree operations
+	int setInputStrings(list<string> inputStrings);
+	int run(int steps);
+
 private:
 	string initialState;
 	char initialStack;
@@ -36,8 +42,8 @@ private:
 	list<char> stackAlphabet;
 	list<char> inputAlphabet;
 	list<TransitionFunction> transitionFunctions;
-
 	list<string> endStates;
+	list<Tree<Transition>> trees;
 };
 
 //
@@ -313,3 +319,29 @@ PDA::PDA(string definitionFilePath)
 }
 
 PDA::~PDA() {}
+
+//tree operations
+int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input strings are valid. Where do we want to check this?
+	//create a tree for each input string
+	int total_trees = 0;
+	for (list<string>::iterator it = inputStrings.begin(); it != inputStrings.end(); it++) {
+		Transition *t = new Transition(initialState, *it, string(&initialStack));
+		Tree<Transition> tree(t);
+		trees.push_back(tree);
+		total_trees++;
+	}
+	return total_trees;
+}
+
+int PDA::run(int steps) {
+	int nodesAdded = 0;
+	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
+		for (int i = 0; i < steps; i++) {
+			//for each tree, grow a certain number of steps
+			nodesAdded += it->growTree();
+		}
+	}
+
+	return nodesAdded;
+}
+
