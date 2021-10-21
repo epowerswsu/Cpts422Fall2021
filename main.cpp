@@ -24,11 +24,10 @@ using namespace std;
 //Additional Created files
 #include "endState.h"
 #include "TransitionFunction.h"
-#include "PDADefHandler.h"
 #include "PDA.h"
 #include "Node.h"
 #include "Config.h"
-
+#include "tree.h"
 
 //Global variables for flagging
 bool PDA_OPEN;
@@ -52,6 +51,8 @@ string getString(string query)
 			cout << "Please enter valid input\n";
 			cin.clear();
 		}
+		else 
+			return answer;
 	}
 	return answer;
 }
@@ -63,6 +64,7 @@ void closePDA()
 	{
 		//close pda
 		PDA_OPEN = false;
+		delete pushDownAutomata;
 	}
 	else
 		cout << "there is no pda open\n\n";
@@ -79,6 +81,7 @@ void deleteInputStr()
 //‘E’ or ‘e’ Exit Application
 bool readyToExit()
 {
+	
 	return true;
 }
 
@@ -104,9 +107,9 @@ void displayInstructions()
 //‘I’ or ‘i’ Insert Input String
 void addInputStr()
 {
-	string input;
-	cin >> input;
-	inputStr.push_back(input);
+	string addToInputStr;
+	addToInputStr = getString("Input string to add to the list of input strings.");
+	inputStr.push_back(addToInputStr);
 }
 
 //‘L’ or ‘l’ List Input Strings
@@ -132,7 +135,7 @@ void openPDA()
 		while (true) //make sure file is a .def file and then make sure we can open it.
 		{
 			PDADefFile = getString("Enter file path to your PDA definition file: ");
-			if (PDADefFile.find(".def"))
+			if (!PDADefFile.find(".def"))
 			{
 				cout << "Please enter a \'.def\' file\n";
 			}
@@ -179,6 +182,11 @@ void RunPDA()
 {
 	if (!PDA_RUNNING)
 	{
+		//check to see how many input strings there are.
+		for(list<string>::iterator it = inputStr.begin(); it!= inputStr.end() ;it++)
+		{
+
+		}
 		PDA_RUNNING = true;//start it
 	}
 	else
@@ -288,6 +296,8 @@ void mainProgramLoop()
 			break;
 		}
 	}
+	//save changes to input strings file
+	//save changes to config file
 }
 
 void introduction()

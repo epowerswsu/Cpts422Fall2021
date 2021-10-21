@@ -4,26 +4,26 @@
 
 template <class T> class Node {
 public:
-	Node(Node* parent, T info);
+	Node(Node<T>* parent, T info);
 	Node(T info);
 	~Node();
 
-	void addChild(Node* child) { this->children.push_back(child); }
+	void addChild(Node<T>* child) { this->children.push_back(child); }
 	int getChildrenSize() { return children->size(); }
 
 
 private:
 	T data;
 	
-	Node* parent;
-	std::list<Node*> children;
+	Node<T>* parent;
+	std::list<Node<T>*> children;
 };
 
 template<class T>
-Node<T>::Node(Node* parent, T info)
+Node<T>::Node(Node* parent, T data)
 {
 	this->parent = parent;
-	data = info
+	this->data = data;
 }
 
 template<class T>

@@ -15,8 +15,6 @@ public:
 	~PDA();
 
 	//int stackAlphabetSize, inputAlphabetSize, stateAlphabetSize;
-	
-	Node* head;
 	bool isNewStartState(string state, char input, char stack, list<TransitionFunction>::iterator& found);
 	bool addToTFList(string state, char input, char stack, EndState e);
 	void splitLineForTF(string line, string& iState, char& iInput, char& iStack, string& endstate, string& oStack);

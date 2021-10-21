@@ -7,7 +7,7 @@ public:
 	Tree(Node<T>* head);
 
 private:
-	Node* <T> head;
+	Node<T>* head;
 };
 
 template <class T> 

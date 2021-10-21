@@ -144,7 +144,6 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PDA.h" />
-    <ClInclude Include="PDADefHandler.h" />
     <ClInclude Include="tree.h" />
   </ItemGroup>
   <ItemGroup>
