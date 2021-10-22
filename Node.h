@@ -12,6 +12,7 @@ public:
 	std::list<Node<T>*> getChildren() { return this->children; }
 	int getChildrenSize() { return children.size(); }
 	int getDepth() { return this->depth; }
+	T* getData() { return this->data; }
 
 
 private:

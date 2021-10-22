@@ -336,11 +336,10 @@ int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input st
 
 int PDA::run(int steps) {
 	int nodesAdded = 0;
-	//breaks if list is empty
 	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
 		for (int i = 0; i < steps; i++) {
 			//for each tree, grow a certain number of steps
-			nodesAdded += it->growTree();
+			nodesAdded += it->growTree(this->transitionFunctions);
 		}
 	}
 

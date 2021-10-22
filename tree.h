@@ -1,11 +1,14 @@
 #pragma once
 #include "Node.h"
+#include "TransitionFunction.h"
+#include "Transition.h"
 
 template <class T>
 class Tree {
 public:
 	Tree(T *headData);
-	int growTree();
+	int growTree() { return 0; }
+	int growTree(list<TransitionFunction> transitionFunctions);
 
 private:
 	list<Node<T>*> getLeaves(Node<T>* node);
@@ -18,12 +21,20 @@ Tree<T>::Tree(T *headData)
 	this->head = new Node<T>(NULL, headData, 0);
 }
 
-template <class T>
-int Tree<T>::growTree() {
-	list<Node<T>*> leaves = getLeaves(this->head);
-
-	for (typename list<Node<T>*>::iterator it = leaves.begin(); it != leaves.end(); it++) {
+template<>
+int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
+	//get the leaf nodes, and add children to each of them
+	list<Node<Transition>*> leaves = getLeaves(this->head);
+	for (typename list<Node<Transition>*>::iterator it = leaves.begin(); it != leaves.end(); it++) {
+		//for each leaf node:
 		cout << "leaf" << endl;
+		list<Transition> childTransitions = (*it)->getData()->getNextTransitions(transitionFunctions);
+		for (typename list<Transition>::iterator it2 = childTransitions.begin(); it2 != childTransitions.end(); it2++) {
+			//create a child node for each child transition
+			Transition *childData = &(*it2);
+			Node<Transition>* newNode = new Node<Transition>((*it), childData, (*it)->getDepth() + 1);
+			(*it)->addChild(newNode);
+		}
 	}
 	return 0;
 }
