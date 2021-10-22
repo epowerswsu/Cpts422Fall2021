@@ -27,12 +27,11 @@ int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
 	list<Node<Transition>*> leaves = getLeaves(this->head);
 	for (typename list<Node<Transition>*>::iterator it = leaves.begin(); it != leaves.end(); it++) {
 		//for each leaf node:
-		cout << "leaf" << endl;
+		cout << "leaf: " << (*it)->getData()->getInput() << " " << (*it)->getData()->getState() << " " << (*it)->getData()->getStack() << endl;
 		list<Transition> childTransitions = (*it)->getData()->getNextTransitions(transitionFunctions);
 		for (typename list<Transition>::iterator it2 = childTransitions.begin(); it2 != childTransitions.end(); it2++) {
 			//create a child node for each child transition
-			Transition *childData = &(*it2);
-			Node<Transition>* newNode = new Node<Transition>((*it), childData, (*it)->getDepth() + 1);
+			Node<Transition>* newNode = new Node<Transition>((*it), &(*it2), (*it)->getDepth() + 1);
 			(*it)->addChild(newNode);
 		}
 	}

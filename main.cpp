@@ -195,7 +195,8 @@ void RunPDA()
 	else
 	{
 		//continue however many steps or until done.
-		PDA_RUNNING = false;
+		pushDownAutomata->run(1);
+		//PDA_RUNNING = false;
 	}
 }
 

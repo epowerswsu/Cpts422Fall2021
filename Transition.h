@@ -18,9 +18,9 @@ private:
 };
 
 Transition::Transition(string state, string input, string stack) {
-	state = state;
-	input = input;
-	stack = stack;
+	this->state = state;
+	this->input = input;
+	this->stack = stack;
 }
 
 list<Transition> Transition::getNextTransitions(list<TransitionFunction> transitionFunctions) {
