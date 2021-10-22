@@ -108,7 +108,7 @@ void displayInstructions()
 void addInputStr()
 {
 	string addToInputStr;
-	addToInputStr = getString("Input string to add to the list of input strings.");
+	addToInputStr = getString("Input string to add to the list of input strings: ");
 	inputStr.push_back(addToInputStr);
 }
 
