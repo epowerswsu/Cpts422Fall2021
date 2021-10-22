@@ -185,9 +185,12 @@ void RunPDA()
 		//check to see how many input strings there are.
 		for(list<string>::iterator it = inputStr.begin(); it!= inputStr.end() ;it++)
 		{
-
+		
 		}
+		
 		PDA_RUNNING = true;//start it
+		pushDownAutomata->setInputStrings(inputStr);
+		pushDownAutomata->run(1);
 	}
 	else
 	{

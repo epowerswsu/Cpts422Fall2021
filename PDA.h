@@ -324,8 +324,9 @@ PDA::~PDA() {}
 int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input strings are valid. Where do we want to check this?
 	//create a tree for each input string
 	int total_trees = 0;
+
 	for (list<string>::iterator it = inputStrings.begin(); it != inputStrings.end(); it++) {
-		Transition *t = new Transition(initialState, *it, string(&initialStack));
+		Transition *t = new Transition(initialState, *it, string(1,initialStack));
 		Tree<Transition> tree(t);
 		trees.push_back(tree);
 		total_trees++;
@@ -335,6 +336,7 @@ int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input st
 
 int PDA::run(int steps) {
 	int nodesAdded = 0;
+	//breaks if list is empty
 	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
 		for (int i = 0; i < steps; i++) {
 			//for each tree, grow a certain number of steps
