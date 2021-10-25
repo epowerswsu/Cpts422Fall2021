@@ -76,7 +76,24 @@ void deleteInputStr()
 	cout << "enter the number of the input string you want to delete\n";
 	short int x;
 	cin >> x;
+	if (inputStr.size() < x || x <= 0)
+	{
+		cout << "no input found at position: " << x << ".\n";
+	}
+	else
+	{
+		int count = 0;
+		list<string>::iterator it = inputStr.begin();
+		x--;
+		while (count < x)
+		{
+			count++;
+			it++;
+		}
+		inputStr.remove(*it);
+	}
 }
+
 
 //‘E’ or ‘e’ Exit Application
 bool readyToExit()
