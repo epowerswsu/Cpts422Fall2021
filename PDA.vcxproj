@@ -154,6 +154,9 @@
     <None Include="..\Cpts422Fall2021\README.md" />
     <None Include="pda.def" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="ConfigFile.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

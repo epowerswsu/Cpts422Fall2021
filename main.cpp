@@ -183,6 +183,7 @@ void openPDA()
 void displayPaths()
 {
 	cout << "paths\n\n";
+	pushDownAutomata->displayTrees();
 }
 
 //‘Q’ or ‘q' Quit Pushdown Automaton

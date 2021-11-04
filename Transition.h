@@ -31,7 +31,7 @@ list<Transition> Transition::getNextTransitions(list<TransitionFunction> transit
 		if (it->getStartState() == this->state && it->getInput() == this->input[0] && it->getStackTop() == this->stack[0]) {
 			list<EndState> endStates = it->getEndStates();
 			for (list<EndState>::iterator it2 = endStates.begin(); it2 != endStates.end(); it2++) {
-				string newStack = it2->getStack() + this->stack;
+				string newStack = it2->getStack()[0] + this->stack; //add top character to new stack
 				string newInput = input.substr(1, input.size() - 1);
 				transitions.push_back(Transition(it2->getState(), newInput, newStack));
 			}

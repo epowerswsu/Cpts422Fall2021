@@ -27,7 +27,7 @@ Node<T>::Node(Node* parent, T* data, int depth)
 {
 	this->parent = parent;
 	this->data = data;
-	this->depth = 0;
+	this->depth = depth;
 }
 
 template<class T>

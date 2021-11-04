@@ -33,6 +33,7 @@ public:
 	//tree operations
 	int setInputStrings(list<string> inputStrings);
 	int run(int steps);
+	void displayTrees();
 
 private:
 	string initialState;
@@ -344,5 +345,11 @@ int PDA::run(int steps) {
 	}
 
 	return nodesAdded;
+}
+
+void PDA::displayTrees() {
+	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
+		it->displayTree();
+	}
 }
 
