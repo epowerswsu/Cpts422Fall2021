@@ -49,6 +49,9 @@
     <None Include="pda.def">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="pda2.def">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ConfigFile.txt">

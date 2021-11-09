@@ -153,6 +153,7 @@
   <ItemGroup>
     <None Include="..\Cpts422Fall2021\README.md" />
     <None Include="pda.def" />
+    <None Include="pda2.def" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ConfigFile.txt" />

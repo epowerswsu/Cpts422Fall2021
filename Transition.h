@@ -27,16 +27,27 @@ list<Transition> Transition::getNextTransitions(list<TransitionFunction> transit
 	//given a list of transition functions, determine all of the resulting transitions (child nodes), and a return them in a list
 	list<Transition> transitions;
 	for (list<TransitionFunction>::iterator it = transitionFunctions.begin(); it != transitionFunctions.end(); it++) {
-
+		//cout << "start state: " << this->state << " == " << it->getStartState() << endl;
+		//cout << "input: " << this->input[0] << " == " << it->getInput() << endl;
+		//cout << "stacktop: " << this->stack[0] << " == " << it->getStackTop() << endl;
 		if (it->getStartState() == this->state && it->getInput() == this->input[0] && it->getStackTop() == this->stack[0]) {
 			list<EndState> endStates = it->getEndStates();
 			for (list<EndState>::iterator it2 = endStates.begin(); it2 != endStates.end(); it2++) {
 				string newStack;
 				if (it2->getStack().size() > 1)
 					newStack = it2->getStack()[0] + this->stack; //add top character to new stack
+				else if (it2->getStack()[0] == '\\')
+					newStack = this->stack.substr(1, this->stack.size() - 1); // '\' means pop from the stack
 				else
 					newStack = this->stack; //no change to stack
 				string newInput = input.substr(1, input.size() - 1);
+
+				//the \ character represents empty/epsilon
+				if(newStack.size() == 0)
+					newStack = "\\";
+				if (newInput.size() == 0)
+					newInput = "\\";
+
 				transitions.push_back(Transition(it2->getState(), newInput, newStack));
 			}
 		}
