@@ -11,8 +11,6 @@ public:
 	~TransitionFunction();
 	//operator== gonna need this probably
 	
-	int transition(EndState& endStates) {}
-	
 	bool newEndState(EndState e);
 	void addEndState(EndState e) { endStates.push_back(e); }
 

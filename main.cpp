@@ -190,14 +190,24 @@ void displayPaths()
 void quitPDA()
 {
 	if (PDA_RUNNING)
-		;//stop
+	{
+		cout << "closing PDA\n";//stop
+		pushDownAutomata->displayTrees();
+		//delete the current trees and stop current 'runs'
+	}
 	else
-		;//why are you here?
+		cout << "there is no PDA open\n";//why are you here?
 }
 
 //‘R’ or ‘r’ Run Pushdown Automaton
 void RunPDA()
 {
+	if (inputStr.size() == 0)
+	{
+		cout << "Add an input string!\n";
+		return;
+	}
+
 	if (!PDA_RUNNING)
 	{
 		//check to see how many input strings there are.
