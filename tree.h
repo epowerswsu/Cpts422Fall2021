@@ -30,11 +30,11 @@ Tree<T>::Tree(T *headData)
 template<class T>
 void Tree<T>::purge(Node<T>* n)
 {
-	if (n->children.size() > 0)
+	if (n->getChildren().size() >0)
 	{
-		for (list<Node<T>*>::iterator it = children.begin(); it != children.end(); it++)
+		for (int i = 0; i < n->getChildren().size(); i++)
 		{
-			purge(it);
+			purge(*(n->getChildren().begin()));
 		}
 	}
 	else
