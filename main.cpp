@@ -191,16 +191,19 @@ void quitPDA()
 {
 	if (PDA_RUNNING)
 	{
-		cout << "closing PDA\n";//stop
-		pushDownAutomata->displayTrees();
+		cout << "clearing current PDA\n";//stop
+		//pushDownAutomata->displayTrees();
+		pushDownAutomata->clearTrees();
+		PDA_RUNNING = false;
 		//delete the current trees and stop current 'runs'
+		
 	}
 	else
 		cout << "there is no PDA open\n";//why are you here?
 }
 
 //‘R’ or ‘r’ Run Pushdown Automaton
-void RunPDA()
+void RunPDA(int transitions)
 {
 	if (inputStr.size() == 0)
 	{
@@ -218,12 +221,12 @@ void RunPDA()
 		
 		PDA_RUNNING = true;//start it
 		pushDownAutomata->setInputStrings(inputStr);
-		pushDownAutomata->run(1);
+		pushDownAutomata->run(transitions);
 	}
 	else
 	{
 		//continue however many steps or until done.
-		pushDownAutomata->run(1);
+		pushDownAutomata->run(transitions);
 		//PDA_RUNNING = false;
 	}
 }
@@ -310,11 +313,11 @@ void mainProgramLoop()
 			break;
 		case 'R':
 		case 'r':
-			RunPDA();
+			RunPDA(config.transitionsPerStep);
 			break;
 		case 'S':
 		case 's':
-			TRANSITIONS = setTransitions();
+			config.transitionsPerStep = setTransitions();
 			break;
 		case 'T':
 		case 't':

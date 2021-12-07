@@ -34,6 +34,7 @@ public:
 	int setInputStrings(list<string> inputStrings);
 	int run(int steps);
 	void displayTrees();
+	void clearTrees(); //called when q is pressed
 
 private:
 	string initialState;
@@ -319,7 +320,10 @@ PDA::PDA(string definitionFilePath)
 	fin.close();
 }
 
-PDA::~PDA() {}
+PDA::~PDA()
+{
+
+}
 
 //tree operations
 int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input strings are valid. Where do we want to check this?
@@ -351,5 +355,16 @@ void PDA::displayTrees() {
 	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
 		it->displayTree();
 	}
+}
+
+//void PDA::viewTrees()
+/*{
+	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
+		it->viewTree();
+	}
+}*/
+void PDA::clearTrees()
+{
+	this->trees.clear();
 }
 

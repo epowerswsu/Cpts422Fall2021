@@ -7,9 +7,9 @@ template <class T>
 class Tree {
 public:
 	Tree(T *headData);
-	~Tree() { purge(head); }
+	~Tree() {}
 
-	void purge(Node<T>* head);
+	//void purge(Node<T>* head);
 
 	int growTree() { return 0; }
 	int growTree(list<TransitionFunction> transitionFunctions);
@@ -27,7 +27,7 @@ Tree<T>::Tree(T *headData)
 	this->head = new Node<T>(NULL, headData, 0);
 }
 
-template<class T>
+/*template<class T>
 void Tree<T>::purge(Node<T>* n)
 {
 	if (n->getChildren().size() >0)
@@ -41,7 +41,7 @@ void Tree<T>::purge(Node<T>* n)
 	{
 		delete n;
 	}
-}
+}*/
 
 template<>
 int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
