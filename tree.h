@@ -14,6 +14,7 @@ public:
 	int growTree() { return 0; }
 	int growTree(list<TransitionFunction> transitionFunctions);
 	void displayTree();
+	void displayTreeInner(Node<Transition>* node, string prev_path);
 
 private:
 	list<Node<T>*> getLeaves(Node<T>* node);
@@ -64,28 +65,26 @@ int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
 
 template<>
 void Tree<Transition>::displayTree() {
-	//display the full tree, assuming it was templated with Transition
-	list<Node<Transition>*> nodes;
-	nodes.push_back(this->head);
-	int depth = 0;
+	//display each path in the tree, start the recursive function
+	Transition* transition = this->head->getData();
+	displayTreeInner(this->head, "( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )");
+}
 
-	while (!nodes.empty()) {
-		//print all nodes in this level
-		cout << "depth: " << depth << "		";
-		for (typename list<Node<Transition>*>::iterator it = nodes.begin(); it != nodes.end(); it++) {
-			cout << (*it)->getData()->getInput() << " " << (*it)->getData()->getState() << " " << (*it)->getData()->getStack();
-			cout << "		";
-			//debug
-			if ((*it)->getDepth() != depth) {
-				cout << "Error, node has wrong depth" << endl;
-				return;
-			}
+template<>
+void Tree<Transition>::displayTreeInner(Node<Transition>* node, string prev_path) {
+	//recursively display paths of the tree
+	if (node->getChildrenSize()) {
+		list<Node<Transition>*> children = node->getChildren();
+		for (typename list<Node<Transition>*>::iterator it = children.begin(); it != children.end(); it++) {
+			Transition* transition = (*it)->getData();
+			string new_path = prev_path + " -> ( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )";
+			displayTreeInner((*it), new_path);
 		}
-		cout << endl;
-		//get the nodes in the next level
-		nodes = getNextLevel(nodes);
-		depth++;
 	}
+	else {
+		cout << prev_path << endl;
+	}
+	return;
 }
 
 template<class T>
