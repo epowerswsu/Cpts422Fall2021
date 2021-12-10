@@ -33,7 +33,7 @@ public:
 	//tree operations
 	int setInputStrings(list<string> inputStrings);
 	int run(int steps);
-	void displayTrees();
+	void displayTrees(bool truncate);
 	void clearTrees(); //called when q is pressed
 
 private:
@@ -351,9 +351,9 @@ int PDA::run(int steps) {
 	return nodesAdded;
 }
 
-void PDA::displayTrees() {
+void PDA::displayTrees(bool truncate) {
 	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
-		it->displayTree();
+		it->displayTree(truncate);
 	}
 }
 

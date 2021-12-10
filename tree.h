@@ -13,8 +13,8 @@ public:
 
 	int growTree() { return 0; }
 	int growTree(list<TransitionFunction> transitionFunctions);
-	void displayTree();
-	void displayTreeInner(Node<Transition>* node, string prev_path);
+	void displayTree(bool Truncate);
+	void displayTreeInner(Node<Transition>* node, string prev_path, bool truncate);
 
 private:
 	list<Node<T>*> getLeaves(Node<T>* node);
@@ -64,21 +64,39 @@ int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
 }
 
 template<>
-void Tree<Transition>::displayTree() {
+void Tree<Transition>::displayTree(bool Truncate) {
 	//display each path in the tree, start the recursive function
 	Transition* transition = this->head->getData();
-	displayTreeInner(this->head, "( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )");
+	if (Truncate)
+	{
+		displayTreeInner(this->head, "( " + transition->getInput() + ", " + transition->getState() + ")", true);
+	}
+	else
+	{
+		displayTreeInner(this->head, "( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )", false);
+	}
+	
 }
 
 template<>
-void Tree<Transition>::displayTreeInner(Node<Transition>* node, string prev_path) {
+void Tree<Transition>::displayTreeInner(Node<Transition>* node, string prev_path, bool truncate) {
 	//recursively display paths of the tree
 	if (node->getChildrenSize()) {
 		list<Node<Transition>*> children = node->getChildren();
 		for (typename list<Node<Transition>*>::iterator it = children.begin(); it != children.end(); it++) {
-			Transition* transition = (*it)->getData();
-			string new_path = prev_path + " -> ( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )";
-			displayTreeInner((*it), new_path);
+			if (truncate)
+			{
+				Transition* transition = (*it)->getData();
+				string new_path = prev_path + " -> ( " + transition->getInput() + ", " + transition->getState() + " )";
+				displayTreeInner((*it), new_path, truncate);
+			}
+			else
+			{
+				Transition* transition = (*it)->getData();
+				string new_path = prev_path + " -> ( " + transition->getInput() + ", " + transition->getState() + ", " + transition->getStack() + " )";
+				displayTreeInner((*it), new_path, truncate);
+			}
+			
 		}
 	}
 	else {

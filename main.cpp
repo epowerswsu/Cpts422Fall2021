@@ -180,10 +180,10 @@ void openPDA()
 
 
 //‘P’ or ‘p’ Display Paths
-void displayPaths()
+void displayPaths(bool Truncate)
 {
 	cout << "paths\n\n";
-	pushDownAutomata->displayTrees();
+	pushDownAutomata->displayTrees(Truncate);
 }
 
 //‘Q’ or ‘q' Quit Pushdown Automaton
@@ -242,11 +242,19 @@ int setTransitions()
 }
 
 //‘T’ or ‘t’ Truncate Instantaneous Descriptions
-void toggleTruncation()
+int toggleTruncation()
 {
 	TRUNCATE_DISP = !TRUNCATE_DISP;
 	cout << "truncate was turned o"
 		<< ((TRUNCATE_DISP) ? "n" : "ff") << "\n\n";
+	if (TRUNCATE_DISP)
+	{
+		 return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 //‘V’ or ‘v’ View Pushdown Automaton
@@ -305,7 +313,7 @@ void mainProgramLoop()
 			break;
 		case 'P':
 		case 'p':
-			displayPaths();
+			displayPaths(config.truncated);
 			break;
 		case 'Q':
 		case 'q':
@@ -321,7 +329,7 @@ void mainProgramLoop()
 			break;
 		case 'T':
 		case 't':
-			toggleTruncation();
+			config.truncated = toggleTruncation();
 			break;
 		case 'V':
 		case 'v':
