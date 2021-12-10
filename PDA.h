@@ -32,7 +32,7 @@ public:
 
 	//tree operations
 	int setInputStrings(list<string> inputStrings);
-	int run(int steps);
+	int run(int steps, int stringIndex);
 	void displayTrees(bool truncate);
 	void clearTrees(); //called when q is pressed
 
@@ -326,34 +326,55 @@ PDA::~PDA()
 }
 
 //tree operations
-int PDA::setInputStrings(list<string> inputStrings) {  //for now assume input strings are valid. Where do we want to check this?
+int PDA::setInputStrings(list<string> inputStrings) {
 	//create a tree for each input string
 	int total_trees = 0;
+	bool stringExists;
 
 	for (list<string>::iterator it = inputStrings.begin(); it != inputStrings.end(); it++) {
-		Transition *t = new Transition(initialState, *it, string(1,initialStack));
-		Tree<Transition> tree(t);
-		trees.push_back(tree);
-		total_trees++;
+		//check if the string already exists in the trees list or not
+		stringExists = false;
+		for (list<Tree<Transition>>::iterator it2 = trees.begin(); it2 != trees.end(); it2++) {
+			if (it2->getInitString() == *it) {
+				stringExists = true;
+				break;
+			}
+		}
+		//if string was not alreay added as a tree before, then add it now
+		if (!stringExists) {
+			Transition* t = new Transition(initialState, *it, string(1, initialStack));
+			Tree<Transition> tree(t);
+			trees.push_back(tree);
+			total_trees++;
+		}
 	}
 	return total_trees;
 }
 
-int PDA::run(int steps) {
+int PDA::run(int steps, int stringIndex) {
+	if (stringIndex >= this->trees.size()) {
+		cout << "Error: string number was out of bounds, please enter a string" <<
+			" number less than " << this->trees.size() << endl;
+		return 0;
+	}
 	int nodesAdded = 0;
-	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
-		for (int i = 0; i < steps; i++) {
-			//for each tree, grow a certain number of steps
-			nodesAdded += it->growTree(this->transitionFunctions);
-		}
+	list<Tree<Transition>>::iterator it = trees.begin();
+	advance(it, stringIndex);
+	for (int i = 0; i < steps; i++) {
+		//for each tree, grow a certain number of steps
+		nodesAdded += it->growTree(this->transitionFunctions);
 	}
 
 	return nodesAdded;
 }
 
 void PDA::displayTrees(bool truncate) {
+	int i = 0;
 	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
+		cout << "string " << i << ": " << it->getInitString() << endl;
 		it->displayTree(truncate);
+		cout << endl;
+		i++;
 	}
 }
 

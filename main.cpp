@@ -33,11 +33,8 @@ using namespace std;
 bool PDA_OPEN;
 bool PDA_RUNNING;
 list<string> inputStr;
+int currentStringIndex;
 PDA *pushDownAutomata = nullptr;
-
-//configurations
-int TRANSITIONS;
-bool TRUNCATE_DISP;
 
 string getString(string query)
 {
@@ -182,6 +179,10 @@ void openPDA()
 //‘P’ or ‘p’ Display Paths
 void displayPaths(bool Truncate)
 {
+	if (!PDA_OPEN) {
+		cout << "Error: no PDA was open, open a PDA with 'o'" << endl;
+		return;
+	}
 	cout << "paths\n\n";
 	pushDownAutomata->displayTrees(Truncate);
 }
@@ -205,29 +206,55 @@ void quitPDA()
 //‘R’ or ‘r’ Run Pushdown Automaton
 void RunPDA(int transitions)
 {
-	if (inputStr.size() == 0)
-	{
-		cout << "Add an input string!\n";
+	if (!PDA_OPEN) {
+		cout << "There is no PDA open! Please open a PDA with 'o'" << endl;
 		return;
 	}
 
+	if (inputStr.size() == 0)
+	{
+		cout << "There are no input strings! Add an input string with 'i'\n";
+		return;
+	}
+
+	int newNodes = 0;
+
 	if (!PDA_RUNNING)
 	{
-		//check to see how many input strings there are.
+		//list out input strings for user to select from
+		cout << "Select an input string to run:" << endl;
+		int i = 0;
 		for(list<string>::iterator it = inputStr.begin(); it!= inputStr.end() ;it++)
 		{
-		
+			cout << i << ": " << *it << endl;
+			i++;
 		}
+		cin >> currentStringIndex;
+		list<string>::iterator it = inputStr.begin();
+		if (currentStringIndex >= inputStr.size() || currentStringIndex < 0) {
+			cout << "Error: string number was out of bounds, please enter a string" <<
+				" number in the range 0 to " << inputStr.size() << endl;
+			return;
+		}
+		advance(it, currentStringIndex);
+
 		
 		PDA_RUNNING = true;//start it
-		pushDownAutomata->setInputStrings(inputStr);
-		pushDownAutomata->run(transitions);
+		pushDownAutomata->setInputStrings(inputStr); //only adds input strings that don't already exist in the PDA
+		newNodes = pushDownAutomata->run(transitions, currentStringIndex);
+		cout << "ran string " << currentStringIndex << " for " << transitions << " step(s)" << endl;
 	}
 	else
 	{
 		//continue however many steps or until done.
-		pushDownAutomata->run(transitions);
+		newNodes = pushDownAutomata->run(transitions, currentStringIndex);
+		cout << "ran string " << currentStringIndex << " for " << transitions << " step(s)" << endl;
 		//PDA_RUNNING = false;
+	}
+
+	if (newNodes == 0) {
+		cout << "finished running string " << currentStringIndex << ", press 'p' to view paths" << endl;
+		PDA_RUNNING = false;
 	}
 }
 
@@ -242,17 +269,16 @@ int setTransitions()
 }
 
 //‘T’ or ‘t’ Truncate Instantaneous Descriptions
-int toggleTruncation()
+bool toggleTruncation(bool currentTruncation)
 {
-	TRUNCATE_DISP = !TRUNCATE_DISP;
-	cout << "truncate was turned o"
-		<< ((TRUNCATE_DISP) ? "n" : "ff") << "\n\n";
-	if (TRUNCATE_DISP)
+	if (!currentTruncation)
 	{
-		 return true;
+		cout << "truncate was turned on" << endl;
+		return true;
 	}
 	else
 	{
+		cout << "truncate was turned off" << endl;
 		return false;
 	}
 }
@@ -274,7 +300,7 @@ char getInput()
 
 void mainProgramLoop()
 {
-	Config config("ConfigFile.txt"); //config file test
+	Config config("ConfigFile.txt"); //read initial settings from config file
 	char input = 'a';
 	bool exitApp = false;
 	displayInstructions();
@@ -329,7 +355,7 @@ void mainProgramLoop()
 			break;
 		case 'T':
 		case 't':
-			config.truncated = toggleTruncation();
+			config.truncated = toggleTruncation(config.truncated);
 			break;
 		case 'V':
 		case 'v':
@@ -359,10 +385,6 @@ int main(int argc, char** argv)
 	//set some flags
 	PDA_OPEN = false;
 	PDA_RUNNING = false;
-
-	//should be load config file
-	TRANSITIONS = 1;
-	TRUNCATE_DISP = false;
 
 	//display a greeting 
 	introduction();

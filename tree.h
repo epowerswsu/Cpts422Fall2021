@@ -15,6 +15,7 @@ public:
 	int growTree(list<TransitionFunction> transitionFunctions);
 	void displayTree(bool Truncate);
 	void displayTreeInner(Node<Transition>* node, string prev_path, bool truncate);
+	string getInitString();
 
 private:
 	list<Node<T>*> getLeaves(Node<T>* node);
@@ -46,6 +47,7 @@ void Tree<T>::purge(Node<T>* n)
 
 template<>
 int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
+	int newNodes = 0;
 	//get the leaf nodes, and add children to each of them
 	list<Node<Transition>*> leaves = getLeaves(this->head);
 	for (typename list<Node<Transition>*>::iterator it = leaves.begin(); it != leaves.end(); it++) {
@@ -57,10 +59,11 @@ int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
 			Transition *t = new Transition(it2->getState(), it2->getInput(), it2->getStack());
 			Node<Transition>* newNode = new Node<Transition>((*it), t, (*it)->getDepth()+1);
 			(*it)->addChild(newNode);
+			newNodes++;
 			//cout << "newNode: " << (*it)->getData()->getInput() << " " << (*it)->getData()->getState() << " " << (*it)->getData()->getStack() << endl;
 		}
 	}
-	return 0;
+	return newNodes;
 }
 
 template<>
@@ -130,4 +133,9 @@ list<Node<T>*> Tree<T>::getLeaves(Node<T>* node) {
 		leafNodes.push_back(node);
 	}
 	return leafNodes;
+}
+
+template <>
+string Tree<Transition>::getInitString() {
+	return this->head->getData()->getInput();
 }
