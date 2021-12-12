@@ -286,7 +286,15 @@ bool toggleTruncation(bool currentTruncation)
 //‘V’ or ‘v’ View Pushdown Automaton
 void viewPDA()
 {
-	cout << "view PDA\n\n";
+	//cout << "view PDA\n\n";
+	if (PDA_OPEN)
+	{
+		pushDownAutomata->displayTF();
+	}
+	else
+	{
+		cout << "There is no open PDA file to view" << endl;
+	}
 }
 
 char getInput()
