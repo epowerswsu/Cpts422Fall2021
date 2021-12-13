@@ -32,6 +32,7 @@ using namespace std;
 //Global variables for flagging
 bool PDA_OPEN;
 bool PDA_RUNNING;
+bool PDA_HAS_RUN;
 list<string> inputStr;
 int currentStringIndex;
 PDA *pushDownAutomata = nullptr;
@@ -195,12 +196,13 @@ void displayPaths(bool Truncate)
 //‘Q’ or ‘q' Quit Pushdown Automaton
 void quitPDA()
 {
-	if (PDA_RUNNING)
+	if (PDA_OPEN && PDA_HAS_RUN)
 	{
 		cout << "clearing current PDA\n";//stop
 		//pushDownAutomata->displayTrees();
 		pushDownAutomata->clearTrees();
 		PDA_RUNNING = false;
+		PDA_HAS_RUN = false;
 		//delete the current trees and stop current 'runs'
 		
 	}
@@ -245,6 +247,7 @@ void RunPDA(int transitions)
 
 		
 		PDA_RUNNING = true;//start it
+		PDA_HAS_RUN = true;
 		pushDownAutomata->setInputStrings(inputStr); //only adds input strings that don't already exist in the PDA
 		newNodes = pushDownAutomata->run(transitions, currentStringIndex);
 		cout << "ran string " << currentStringIndex << " for " << transitions << " step(s)" << endl;
@@ -398,6 +401,7 @@ int main(int argc, char** argv)
 	//set some flags
 	PDA_OPEN = false;
 	PDA_RUNNING = false;
+	PDA_HAS_RUN = false;
 
 	//display a greeting 
 	introduction();
