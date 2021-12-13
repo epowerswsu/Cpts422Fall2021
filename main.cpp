@@ -119,10 +119,15 @@ void displayInstructions()
 }
 
 //‘I’ or ‘i’ Insert Input String
-void addInputStr()
+void addInputStr(int maxChars)
 {
 	string addToInputStr;
 	addToInputStr = getString("Input string to add to the list of input strings: ");
+	if (addToInputStr.size() > maxChars) {
+		cout << "Error: string size was greater than character limit (" << maxChars << ")" << endl;
+		cout << "MAXIMUM_CHARACTERS is defined in ConfigFile.txt" << endl;
+		return;
+	}
 	inputStr.push_back(addToInputStr);
 }
 
@@ -335,7 +340,7 @@ void mainProgramLoop()
 			break;
 		case 'I':
 		case 'i':
-			addInputStr();
+			addInputStr(config.maxCharacters);
 			break;
 		case 'L':
 		case 'l':
