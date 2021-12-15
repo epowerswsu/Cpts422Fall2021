@@ -259,9 +259,14 @@ void RunPDA(int transitions)
 		cout << "ran string " << currentStringIndex << " for " << transitions << " step(s)" << endl;
 		//PDA_RUNNING = false;
 	}
-
+	
 	if (newNodes == 0) {
 		cout << "finished running string " << currentStringIndex << ", press 'p' to view paths" << endl;
+		bool pda_success = pushDownAutomata->endStateAchieved();
+		if (pda_success)
+			cout << "This input string was accepted\n\n";
+		else
+			cout << "this input string failed\n\n";
 		PDA_RUNNING = false;
 	}
 }
@@ -311,6 +316,7 @@ char getInput()
 	cout << "  > ";
 	char x;
 	cin >> x;
+	cin.clear();
 	return x;
 }
 
@@ -355,7 +361,7 @@ void mainProgramLoop()
 			break;
 		case 'P':
 		case 'p':
-			displayPaths(config.truncated);
+			displayPaths((bool)config.truncated);
 			break;
 		case 'Q':
 		case 'q':

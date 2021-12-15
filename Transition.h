@@ -1,15 +1,34 @@
 #pragma once
+#include <string>
 #include "TransitionFunction.h"
 #include "endstate.h"
 
 
+
 class Transition {
 public:
+	//Transition() { state = ""; input = ""; stack = ""; }
 	Transition(string state, string input, string stack);
 	list<Transition> getNextTransitions(list<TransitionFunction> transitionFunctions);
 	string getState() { return this->state; }
 	string getInput() { return this->input; }
 	string getStack() { return this->stack; }
+	
+	Transition(const Transition& t) { state = t.state; input = t.input; stack = t.stack; }
+	Transition& operator=(const Transition& rhs) { state = rhs.state; input = rhs.input; stack = rhs.stack; }
+	bool operator==(std::string rhs) 
+	{ 
+		if (state+'\0' == rhs)
+			return true; 
+		else return false; 
+	}
+	bool operator==(Transition& rhs) 
+	{ 
+		if (state == rhs.getState()) 
+			return true; 
+		else return false; }
+	//bool operator==(basic_string<char, char_traits<char>, allocator<char>>& rhs) 
+	//{ if (state == rhs) return true; else return false;  }
 
 private:
 	string state;

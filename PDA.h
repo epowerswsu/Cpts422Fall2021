@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <string>
 //#include <list>
 
 #include "TransitionFunction.h"
@@ -20,7 +21,6 @@ public:
 	bool isNewStartState(string state, char input, char stack, list<TransitionFunction>::iterator& found);
 	bool addToTFList(string state, char input, char stack, EndState e);
 	void splitLineForTF(string line, string& iState, char& iInput, char& iStack, string& endstate, string& oStack);
-
 	void displayTF();
 	
 	//Getters
@@ -35,6 +35,8 @@ public:
 	int run(int steps, int stringIndex);
 	void displayTrees(bool truncate);
 	void clearTrees(); //called when q is pressed
+
+	bool endStateAchieved();
 
 private:
 	string initialState;
@@ -363,8 +365,11 @@ int PDA::run(int steps, int stringIndex) {
 	for (int i = 0; i < steps; i++) {
 		//for each tree, grow a certain number of steps
 		nodesAdded += it->growTree(this->transitionFunctions);
-	}
+		/*if (trees.foundEndState())
+		{
 
+		}*/
+	}
 	return nodesAdded;
 }
 
@@ -378,14 +383,15 @@ void PDA::displayTrees(bool truncate) {
 	}
 }
 
-//void PDA::viewTrees()
-/*{
-	for (list<Tree<Transition>>::iterator it = trees.begin(); it != trees.end(); it++) {
-		it->viewTree();
-	}
-}*/
 void PDA::clearTrees()
 {
 	this->trees.clear();
+}
+
+inline bool PDA::endStateAchieved()
+{
+	if (trees.begin()->endStateFound(this->endStates))
+		return true;
+	else return false;
 }
 

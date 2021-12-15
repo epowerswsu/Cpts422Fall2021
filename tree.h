@@ -9,8 +9,9 @@ public:
 	Tree(T *headData);
 	~Tree() {}
 
-	//void purge(Node<T>* head);
-
+	bool endStateFound(list<string> endStates);
+	void checkForEndState(Node<T>* head, bool& found, list<string> endStates);
+	
 	int growTree() { return 0; }
 	int growTree(list<TransitionFunction> transitionFunctions);
 	void displayTree(bool Truncate);
@@ -29,21 +30,38 @@ Tree<T>::Tree(T *headData)
 	this->head = new Node<T>(NULL, headData, 0);
 }
 
-/*template<class T>
-void Tree<T>::purge(Node<T>* n)
+
+template<class T>
+inline bool Tree<T>::endStateFound(list<string> endStates)
 {
-	if (n->getChildren().size() >0)
+	bool found = false;
+	checkForEndState(head, found, endStates);
+	return found;
+}
+
+template<class T>
+inline void Tree<T>::checkForEndState(Node<T>* head, bool& found, list<string> endStates)
+{
+	list<Node<T>*> headChildren = head->getChildren();
+	if (headChildren.size() > 0)
 	{
-		for (int i = 0; i < n->getChildren().size(); i++)
+		for (typename list<Node<T>*>::iterator it = headChildren.begin(); it != headChildren.end(); it++)
 		{
-			purge(*(n->getChildren().begin()));
+			checkForEndState(*it, found, endStates);
 		}
 	}
 	else
 	{
-		delete n;
+		for (list<string>::iterator it = endStates.begin(); it != endStates.end(); it++)
+		{
+			string s = *it;
+			T *data = head->getData();
+			if ( *data == s)
+				found = true;
+		}
 	}
-}*/
+}
+
 
 template<>
 int Tree<Transition>::growTree(list<TransitionFunction> transitionFunctions) {
