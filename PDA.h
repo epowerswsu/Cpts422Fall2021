@@ -31,12 +31,13 @@ public:
 	int getinputAlphabetSize() { return inputAlphabet.size(); }
 
 	//tree operations
+	int getNumTrees() { return trees.size(); }
 	int setInputStrings(list<string> inputStrings);
 	int run(int steps, int stringIndex);
 	void displayTrees(bool truncate);
 	void clearTrees(); //called when q is pressed
 
-	bool endStateAchieved();
+	bool endStateAchieved(int treeNum);
 
 private:
 	string initialState;
@@ -388,9 +389,16 @@ void PDA::clearTrees()
 	this->trees.clear();
 }
 
-inline bool PDA::endStateAchieved()
+inline bool PDA::endStateAchieved(int treeNum)
 {
-	if (trees.begin()->endStateFound(this->endStates))
+	list<Tree<Transition>>::iterator it = trees.begin();
+	int count = 0;
+	while (count < treeNum)
+	{
+		count++;
+		it++;
+	}
+	if (it->endStateFound(this->endStates))
 		return true;
 	else return false;
 }

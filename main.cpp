@@ -262,11 +262,15 @@ void RunPDA(int transitions)
 	
 	if (newNodes == 0) {
 		cout << "finished running string " << currentStringIndex << ", press 'p' to view paths" << endl;
-		bool pda_success = pushDownAutomata->endStateAchieved();
-		if (pda_success)
-			cout << "This input string was accepted\n\n";
-		else
-			cout << "this input string failed\n\n";
+		for (int i = 0; i < pushDownAutomata->getNumTrees(); i++)
+		{
+			bool pda_success = pushDownAutomata->endStateAchieved(i);
+			cout << "input string #" << i << ". ";
+			if (pda_success)
+				cout << "This input string was accepted\n\n";
+			else
+				cout << "this input string failed\n\n";
+		}
 		PDA_RUNNING = false;
 	}
 }
